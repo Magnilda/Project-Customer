@@ -43,6 +43,8 @@ public class TilemapGenerator : MonoBehaviour
                 }
 
                 GameObject tempHexTile =  Instantiate(hexPrefab, new Vector3(xPos, 0, z * zOffset), Quaternion.identity); //identity means no rotations
+                tempHexTile.transform.parent = transform;
+                tempHexTile.name = "Hex: " + x + " , " + z;
                 hexTilemapArray[x, z] = tempHexTile;
             }
         }
