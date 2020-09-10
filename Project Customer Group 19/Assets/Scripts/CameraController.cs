@@ -3,40 +3,40 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Camera))]
 public class CameraController : MonoBehaviour
 {
     //[SerializeField] private float fastSpeed;  //Faster camera movement option.
-    [SerializeField] private float normalSpeed;
+    [Header("Camera settings")]
+    [SerializeField] private float cameraSpeed;
     [SerializeField, Tooltip("Lower values make it smoother, you can also go into the decimal eg. 0.5")]
     private float smoothDelta;
     [SerializeField] private float rotationSpeed;
     [SerializeField] private float zoomSpeed = 5;
     [SerializeField] private float minZoom;
     [SerializeField] private float maxZoom;
+    [SerializeField] private float tilt = 50f;
 
     [Header("Debug settings")]
     [SerializeField] private float pivotDebugRadius = 2;
     [SerializeField] private Vector3 pivot;
     [SerializeField] private float zoomAmount = 1;
-    private bool mouseDragging;
     [SerializeField] private float rotationY;
-    [SerializeField] private float rotationX = 50f;
+    //private Vector3 tempZoom;
+    //private float amountToZoom;
     private Vector3 dragStartPosition;
     private Vector3 dragCurrentPosition;
-    //private Vector3 rotateStartPosition;
-    //private Vector3 rotateCurrentPosition;
+    private Vector3 rotateStartPosition;
+    private Vector3 rotateCurrentPosition;
 
     //=================================================================
     //                           Start()
     //=================================================================
-
     void Start()
     {
         dragStartPosition = Input.mousePosition;
-        //rotateStartPosition = Input.mousePosition;
+        rotateStartPosition = Input.mousePosition;
     }
 
     //=================================================================
@@ -55,17 +55,16 @@ public class CameraController : MonoBehaviour
     private void HandleMouseInput()
     {
         //Panning
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(2))
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(2))
             {
                 dragStartPosition = Input.mousePosition;
             }
 
             dragCurrentPosition = Input.mousePosition;
-            Vector2 difference = new Vector2();
-            difference = (dragStartPosition - dragCurrentPosition).normalized;
-            pivot += new Vector3(difference.x, 0, difference.y) * normalSpeed * Time.deltaTime;
+            Vector2 difference = (dragStartPosition - dragCurrentPosition).normalized;
+            pivot += new Vector3(difference.x, 0, difference.y) * cameraSpeed * Time.deltaTime;
 
             dragStartPosition = Input.mousePosition;
         }
@@ -77,7 +76,20 @@ public class CameraController : MonoBehaviour
         }
 
         //Rotation
-        //Future plans......to be continued.....
+        if (Input.GetMouseButton(1))
+        {
+            if (Input.GetMouseButtonDown(1))
+            {
+                rotateStartPosition = Input.mousePosition;
+            }
+
+            rotateCurrentPosition = Input.mousePosition;
+            Vector2 difference = (rotateStartPosition - rotateCurrentPosition).normalized;
+            //rotationX += difference.y * rotationSpeed * Time.deltaTime;
+            rotationY += difference.x * rotationSpeed * Time.deltaTime;
+
+            rotateStartPosition = Input.mousePosition;
+        }
     }
 
     //=================================================================
@@ -86,8 +98,9 @@ public class CameraController : MonoBehaviour
     private void HandleKeyboardInputs()
     {
         //Panning
-        Vector3 moveDirection = (Vector3.forward * Input.GetAxis("Vertical") + Vector3.right * Input.GetAxis("Horizontal")).normalized;
-        pivot += moveDirection * normalSpeed * Time.deltaTime;
+        Vector3 moveDirection = (transform.forward * Input.GetAxis("Vertical") + transform.right * Input.GetAxis("Horizontal")).normalized;
+        moveDirection.y = 0;
+        pivot += moveDirection * cameraSpeed * Time.deltaTime;
 
         //Zooming in and out
         if (Input.GetKey(KeyCode.R))
@@ -102,11 +115,11 @@ public class CameraController : MonoBehaviour
         //Rotation
         if (Input.GetKey(KeyCode.Q))
         {
-            rotationY--;
+            rotationY-= rotationSpeed * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.E))
         {
-            rotationY++;
+            rotationY+= rotationSpeed * Time.deltaTime;
         }
     }
 
@@ -123,10 +136,11 @@ public class CameraController : MonoBehaviour
     //=================================================================
     private void CameraMovement()
     {
-        transform.rotation = Quaternion.Euler(new Vector3(rotationX, rotationY, 0));   //Needs fixing....
-        Vector3 targetPosition = pivot + -transform.forward * zoomAmount;
+        Quaternion targetRotation = Quaternion.Euler(new Vector3(tilt, rotationY, 0));
 
-        transform.position = Vector3.Slerp(transform.position, targetPosition, Time.deltaTime * smoothDelta);
+        transform.rotation = Quaternion.Lerp(transform.rotation,targetRotation,smoothDelta*Time.deltaTime);
+
+        transform.position = pivot + -transform.forward * zoomAmount;
     }
 
 
