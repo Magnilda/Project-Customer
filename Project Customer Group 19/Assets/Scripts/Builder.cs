@@ -12,14 +12,15 @@ public class Builder : MonoBehaviour
         WATERFACILITY,
         HOUSE
     }
-
+    [Header("Builder Settings")]
     [SerializeField] private GameObject housePrefab;
     [SerializeField] private GameObject townHallPrefab;
     [SerializeField] private GameObject waterPumpPrefab;
 
-
+    [Header("Debug Settings")]
     [SerializeField] private Button cancelButton;
     [SerializeField] private GameManager gameManager;
+    [SerializeField] private TownHall townHall;
     private GameObject buildingPrefab;
     private bool canBuild = false;
     private bool townHallMode = false;
@@ -66,6 +67,7 @@ public class Builder : MonoBehaviour
                     GameObject tempBuilding = Instantiate(townHallPrefab, new Vector3(x, 0, z), Quaternion.identity);
 
                     hitObject.GetComponentInParent<LandTile>().Building = tempBuilding;
+                    townHall = tempBuilding.GetComponent<TownHall>();
                     townHallMode = false;
                     gameManager.CurrentStage = GameManager.GameStage.GAME;
                 }
@@ -94,6 +96,7 @@ public class Builder : MonoBehaviour
                     GameObject tempBuilding = Instantiate(waterPumpPrefab, new Vector3(x, 0, z), Quaternion.identity);
 
                     hitObject.GetComponentInParent<WaterTile>().Building = tempBuilding;
+                    townHall.WaterPumpAmount++;
                     canBuild = false;
                     cancelButton.gameObject.SetActive(false);
                 }

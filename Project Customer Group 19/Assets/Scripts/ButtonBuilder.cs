@@ -24,7 +24,7 @@ public class ButtonBuilder : MonoBehaviour
 
         builder.CanBuild = true;
         EnableCancelButton();
-        Debug.Log("CHANGED TO TRUE");
+        //Debug.Log("CHANGED TO TRUE");
     }
 
     //=================================================================

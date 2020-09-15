@@ -8,28 +8,49 @@ public class Currency : MonoBehaviour
     //TODO Add a listener for an action to fire add method!
 
     [Header("Currency Settings")]
-    [SerializeField] private int startingCurrency;
+    //[SerializeField] private int startingCurrency;
+    [SerializeField] private Text currencyText;
 
     [Header("Debug Settings")]
     private int currentCurrency;
     private int subtractAmount;
     private int addAmount;
-    private Text currencyText;
 
     //=================================================================
     //                           Start()
     //=================================================================
     public void Start()
     {
-        currentCurrency = startingCurrency;
-        Purchase.OnPurchase += SubtractCurrency;
-        Purchase.OnPurchase += UpdateCurrency;
+        //currentCurrency = startingCurrency;
+        Purchase.OnPurchase += HandleSubtraction;
+        TimeManager.OnNextDayAction += HandleAdding;
     }
 
+    //=================================================================
+    //                          OnDestroy()
+    //=================================================================
     public void OnDestroy()
     {
-        Purchase.OnPurchase -= SubtractCurrency;
-        Purchase.OnPurchase -= UpdateCurrency;
+        Purchase.OnPurchase -= HandleSubtraction;
+        TimeManager.OnNextDayAction -= HandleAdding;
+    }
+
+    //=================================================================
+    //                        HandleAdding()
+    //=================================================================
+    private void HandleAdding()
+    {
+        AddCurrency();
+        UpdateCurrency();
+    }
+
+    //=================================================================
+    //                       HandleSubtraction()
+    //=================================================================
+    private void HandleSubtraction()
+    {
+        SubtractCurrency();
+        UpdateCurrency();
     }
 
     //=================================================================
@@ -53,7 +74,6 @@ public class Currency : MonoBehaviour
     //=================================================================
     private void UpdateCurrency()
     {
-        currencyText = this.GetComponent<Text>();
         currencyText.text = "Currency: " + currentCurrency;
     }
 

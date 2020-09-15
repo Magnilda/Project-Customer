@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private Canvas canvas;
     [SerializeField] private Builder builder;
+    [SerializeField] private TimeManager timeManager;
 
     public enum GameStage
     {

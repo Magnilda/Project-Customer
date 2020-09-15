@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6629460281721727472}
   - component: {fileID: 6149783048209311694}
   - component: {fileID: 7859560185636651479}
+  - component: {fileID: 1653537759388639065}
   m_Layer: 0
   m_Name: Townhall
   m_TagString: Untagged
@@ -110,3 +111,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingCost: 0
   type: 3
+--- !u!114 &1653537759388639065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6414826172780125515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 550394140a849e642aad2fdccf4ded33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseIncome: 40
+  farmWaterUsage: 0
+  houseWaterUsage: 0
+  townHallLevel: 1
+  waterPumpAmount: 0
+  farmAmount: 0
+  cameraManAmount: 0
+  dailyIncome: 0
+  dailyWaterIncome: 0
+  UI_currency_script: {fileID: 0}
