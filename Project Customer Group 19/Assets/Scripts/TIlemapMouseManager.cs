@@ -9,7 +9,7 @@ public class TIlemapMouseManager : MonoBehaviour
     //======================================================
     void Update()
     {
-        mouseHover();
+        //mouseHover();
     }
 
     //======================================================

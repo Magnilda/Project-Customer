@@ -70,7 +70,7 @@ public class TilemapGenerator : MonoBehaviour
                     xPos += xOffset * 0.5f;
                 }
 
-                GameObject tempHexTile = Instantiate(tempTileType, new Vector3(xPos, 0, z * zOffset), Quaternion.identity); ; //identity means no rotations
+                GameObject tempHexTile = Instantiate(tempTileType, new Vector3(xPos, 0, z * zOffset), Quaternion.identity); //identity means no rotations
 
                 //Setting parent and name of tile.
                 tempHexTile.transform.parent = transform;
