@@ -7,6 +7,9 @@ public class LandTile : Tile
     private bool tileOccupied = false;
     private GameObject building;   //building on the tile
 
+    //=================================================================
+    //                         Update()
+    //=================================================================
     public void Update()
     {
         //If a building is on the tile set the bool to true

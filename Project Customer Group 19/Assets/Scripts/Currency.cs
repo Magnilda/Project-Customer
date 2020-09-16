@@ -5,25 +5,32 @@ using UnityEngine.UI;
 
 public class Currency : MonoBehaviour
 {
-    //TODO Add a listener for an action to fire add method!
-
     [Header("Currency Settings")]
-    //[SerializeField] private int startingCurrency;
+    [SerializeField] private int startingCurrency;
+    [SerializeField] private int startingWaterAmount;
     [SerializeField] private Text currencyText;
+    [SerializeField] private Text waterText;
 
     [Header("Debug Settings")]
     private int currentCurrency;
+    private int currentWaterAmount;
     private int subtractAmount;
     private int addAmount;
+    private int addWaterAmount;
 
     //=================================================================
     //                           Start()
     //=================================================================
     public void Start()
     {
-        //currentCurrency = startingCurrency;
+        currentCurrency = startingCurrency;
+        currentWaterAmount = startingWaterAmount;
+        UpdateCurrency();
+        UpdateWater();
+
         Purchase.OnPurchase += HandleSubtraction;
         TimeManager.OnNextDayAction += HandleAdding;
+        TimeManager.OnNextDayAction += HandleWaterChanges;
     }
 
     //=================================================================
@@ -33,6 +40,7 @@ public class Currency : MonoBehaviour
     {
         Purchase.OnPurchase -= HandleSubtraction;
         TimeManager.OnNextDayAction -= HandleAdding;
+        TimeManager.OnNextDayAction -= HandleWaterChanges;
     }
 
     //=================================================================
@@ -54,7 +62,16 @@ public class Currency : MonoBehaviour
     }
 
     //=================================================================
-    //                 SubtractCurrency(int amount)
+    //                      HandleWaterChanges()
+    //=================================================================
+    private void HandleWaterChanges()
+    {
+        AddToWaterMeter();
+        UpdateWater();
+    }
+
+    //=================================================================
+    //                       SubtractCurrency()
     //=================================================================
     private void SubtractCurrency()
     {
@@ -62,11 +79,19 @@ public class Currency : MonoBehaviour
     }
 
     //=================================================================
-    //                  AddCurrency(int amount)
+    //                        AddCurrency()
     //=================================================================
     private void AddCurrency()
     {
         currentCurrency += addAmount;
+    }
+
+    //=================================================================
+    //                        AddWaterAmount()
+    //=================================================================
+    private void AddToWaterMeter()
+    {
+        currentWaterAmount += addWaterAmount;
     }
 
     //=================================================================
@@ -77,8 +102,18 @@ public class Currency : MonoBehaviour
         currencyText.text = "Currency: " + currentCurrency;
     }
 
+    //=================================================================
+    //                       UpdateWater()
+    //=================================================================
+    private void UpdateWater()
+    {
+        if (currentWaterAmount < 0) { waterText.text = "Water: " + 0; }
+        else { waterText.text = "Water: " + currentWaterAmount; }
+    }
+
     //Getter & Setters
     public int CurrentCurrency { get => currentCurrency;}
     public int SubtractAmount { set => subtractAmount = value; }
     public int AddAmount {set => addAmount = value; }
+    public int AddWaterAmount { set => addWaterAmount = value; }
 }

@@ -12,7 +12,9 @@ public class GameManager : MonoBehaviour
     {
         MENU,
         TOWNHALL,
-        GAME
+        GAME,
+        GAMEOVER,
+        WIN
     }
     private GameStage currentStage;
 

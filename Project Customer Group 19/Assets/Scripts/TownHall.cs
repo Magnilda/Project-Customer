@@ -6,6 +6,7 @@ public class TownHall : MonoBehaviour
 {
     [Header("Townhall Settings")]
     [SerializeField] private int baseIncome;
+    [SerializeField] private int baseWaterUsage;
     [SerializeField] private int farmWaterUsage;
     [SerializeField] private int houseWaterUsage;
 
@@ -55,7 +56,7 @@ public class TownHall : MonoBehaviour
         dailyWaterIncome = CalculateWaterIncome();
 
         UI_currency_script.AddAmount = dailyIncome;
-        //TODO add water
+        UI_currency_script.AddWaterAmount = dailyWaterIncome;
 
         //dailyIncome = 0;
         //dailyWaterIncome = 0;
@@ -75,7 +76,7 @@ public class TownHall : MonoBehaviour
     //=================================================================
     private int CalculateWaterIncome()  //Income of water per day
     {
-        int value = (waterPumpAmount /* * waterPumpIncome */ ) - (farmWaterUsage + houseWaterUsage); // * amount of them
+        int value = (waterPumpAmount /* * waterPumpIncome */ ) - (farmWaterUsage + houseWaterUsage + baseWaterUsage); // * amount of them
         return value;
     }
 

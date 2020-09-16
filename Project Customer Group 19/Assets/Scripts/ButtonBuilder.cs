@@ -24,6 +24,7 @@ public class ButtonBuilder : MonoBehaviour
 
         builder.CanBuild = true;
         EnableCancelButton();
+        this.gameObject.SetActive(false);
         //Debug.Log("CHANGED TO TRUE");
     }
 
@@ -42,6 +43,7 @@ public class ButtonBuilder : MonoBehaviour
     {
         cancelButton.gameObject.SetActive(false);
         builder.CanBuild = false;
+        this.gameObject.SetActive(true);
     }
 }
 
