@@ -44,7 +44,7 @@ public class Upgrader : MonoBehaviour
             }
         }
 
-        if(buyCameraman == true)
+        if (buyCameraman == true)
         {
             //TODO display cameraman
         }
@@ -55,25 +55,29 @@ public class Upgrader : MonoBehaviour
     {
         GameObject collidingObject = GetHitObject();
 
-        if(collidingObject == null) { return; }
+        if (collidingObject == null) { return; }
 
-        if (collidingObject.GetComponentInParent<Building>()) {
+        if (collidingObject.GetComponentInParent<Building>())
+        {
             //Debug.Log("Found building component");
             if (collidingObject.GetComponentInParent<Building>().Type == Building.BuildingType.TOWNHALL && Input.GetMouseButtonDown(0))
             {
                 //Debug.Log("Building type is a townhall");
                 upgradeMode = true;
                 selectedGameObject = collidingObject;
-                EnableButtons();
+                cancelButton.gameObject.SetActive(true);
+                upgradeButton.gameObject.SetActive(true);
+                cameraButton.gameObject.SetActive(true);
+            }
+
+            if (collidingObject.GetComponentInParent<Building>().Type == Building.BuildingType.UPGRADEDHOUSE && Input.GetMouseButtonDown(0))
+            {
+                upgradeMode = true;
+                selectedGameObject = collidingObject;
+                cancelButton.gameObject.SetActive(true);
+                cameraButton.gameObject.SetActive(true); ;
             }
         }
-    }
-
-    private void EnableButtons()
-    {
-        cancelButton.gameObject.SetActive(true);
-        upgradeButton.gameObject.SetActive(true);
-        cameraButton.gameObject.SetActive(true);
     }
 
     private void DisableButtons()

@@ -15,6 +15,7 @@ public class PurchasingButton : MonoBehaviour
         upgradeButton.gameObject.SetActive(false);
         cameraButton.gameObject.SetActive(false);
         cancelButton.gameObject.SetActive(false);
+
         upgrader.BuyCameraman = false;
         upgrader.UpgradeHouse = false;
     }
