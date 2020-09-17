@@ -470,6 +470,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2660025489b91dd40b3b21f0166fcdaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vegitation:
+  - {fileID: 2473606220722635006}
+  - {fileID: 8533689111314098701}
+  - {fileID: 8024648846692516128}
 --- !u!1 &5989786937342416191
 GameObject:
   m_ObjectHideFlags: 0

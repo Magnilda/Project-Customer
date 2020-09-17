@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +13,7 @@ public class Builder : MonoBehaviour
     }
     [Header("Builder Settings")]
     [SerializeField] private GameObject housePrefab;
+    [SerializeField] private GameObject farmPrefab;
     [SerializeField] private GameObject townHallPrefab;
     [SerializeField] private GameObject waterPumpPrefab;
 
@@ -30,8 +30,12 @@ public class Builder : MonoBehaviour
     private bool townHallMode = false;
     private BuildingType buildingType;
     private int price;
+    private uint level;
 
     [SerializeField] private ChangeText error;
+
+    List<LandTile> openSet = new List<LandTile>();
+    List<LandTile> closedSet = new List<LandTile>();
 
     //=================================================================
     //                           Update()
@@ -55,6 +59,25 @@ public class Builder : MonoBehaviour
     }
 
     //=================================================================
+    //                      OnLevelStart()
+    //=================================================================
+    private void OnLevelStart()
+    { 
+        level++;
+        switch(level)
+        {
+            case 0:
+                break;
+            case 1:
+                ExpandVillage(2, 1);
+                break;
+            default:
+                ExpandVillage(3, 1);
+                break;
+        }
+    }
+
+    //=================================================================
     //                      HandleTownHallBuilding()
     //=================================================================
     private void HandleTownHallBuilding()
@@ -64,39 +87,30 @@ public class Builder : MonoBehaviour
             GameObject hitObject = GetHitObject();
 
             if (hitObject == null) { return; }
-            if (Input.GetMouseButtonDown(0))
-            {
-                if (hitObject.GetComponentInParent<LandTile>() && hitObject.GetComponentInParent<LandTile>().GetNeighbours().Count >= 5)
-                {
-                    foreach (GameObject gm in hitObject.GetComponentInParent<LandTile>().GetNeighbours())
-                    {
-                        if (gm.GetComponent<WaterTile>())
-                        {
-                            if (error != null)
-                                error.ChangeTextAndColor("Not enough available tiles in this region");
-                            return;
-                        }
-                    }
-                }
-                else
-                {
-                    if (error != null)
-                        error.ChangeTextAndColor("Not enough available tiles in this region");
-                    return;
-                }
-            }
 
-            if (hitObject.GetComponentInParent<LandTile>() && Input.GetMouseButtonDown(0))
+            LandTile tile = hitObject.GetComponentInParent<LandTile>();
+            if (tile && Input.GetMouseButtonDown(0))
             {
-                if (hitObject.GetComponentInParent<LandTile>().TileOccupied == false)
+                if (tile.TileOccupied == false)
                 {
                     float x = hitObject.transform.position.x;
                     float z = hitObject.transform.position.z;
                     GameObject tempBuilding = Instantiate(townHallPrefab, new Vector3(x, yOffsetTownHall, z), Quaternion.identity);
-                    hitObject.GetComponentInParent<LandTile>().Building = tempBuilding;
+                    tile.Building = tempBuilding;
                     tempBuilding.GetComponentInParent<Building>().Tile = hitObject;
                     townHall = tempBuilding.GetComponent<TownHall>();
-                    SpawnHouses(5, hitObject);
+
+                    closedSet.Add(tile);
+                    foreach (GameObject neighbour in tile.GetNeighbours())
+                    {
+                        LandTile neighbourTile = neighbour.GetComponent<LandTile>();
+                        if (neighbourTile && !closedSet.Contains(neighbourTile) && !openSet.Contains(neighbourTile))
+                            openSet.Add(neighbourTile);
+                    }
+
+                    ExpandVillage(5, 0);
+
+                    TimeManager.OnNextDayAction += OnLevelStart; ///TODO: MEI REMAP THIS TO NEXT LEVEL INSTEAD OF NEXT DAY. Good luck with your deadline ;)
 
                     townHallMode = false;
                     gameManager.CurrentStage = GameManager.GameStage.GAME;
@@ -107,30 +121,84 @@ public class Builder : MonoBehaviour
     }
 
     //=================================================================
-    //             SpawnHouses(int amount, GameObject tile)
+    //             ExpandVillage(uint houses, uint farms)
     //=================================================================
-    private void SpawnHouses(int amount, GameObject tile)
+    void ExpandVillage(uint houses, uint farms)
     {
-        List<GameObject> neighbours = tile.GetComponentInParent<Tile>().GetNeighbours();
-        for (int num = 0; num < amount; num++)
+        if (openSet.Count == 0)
         {
-            GameObject _tile = neighbours[num];
+            Debug.Log("Boats still need to be invented...");
+            return;
+        }
+        List<LandTile> placementSet = new List<LandTile>(openSet);
 
-            if (_tile.GetComponent<LandTile>())
+        for (uint i = 0; i < houses; i++)
+        {
+            if(placementSet.Count == 0)
+                placementSet = new List<LandTile>(openSet);
+
+            LandTile tile = placementSet[Random.Range(0, placementSet.Count)];
+            SpawnHouse(tile);
+            openSet.Remove(tile);
+            placementSet.Remove(tile);
+            closedSet.Add(tile);
+            foreach (GameObject neighbour in tile.GetNeighbours())
             {
-                if (!_tile.GetComponent<LandTile>().TileOccupied)
-                {
-                    float xPos = _tile.transform.position.x;
-                    float zPos = _tile.transform.position.z;
-
-                    int temp = UnityEngine.Random.Range(0, 6);
-                    GameObject tempBuilding = Instantiate(housePrefab, new Vector3(xPos, yOffsetHouse, zPos), Quaternion.Euler(0, temp * 60, 0));
-                    _tile.GetComponentInParent<LandTile>().Building = tempBuilding;
-                    tempBuilding.GetComponentInParent<Building>().Tile = _tile;
-                    townHall.HouseAmount++;
-                }
+                LandTile neighbourTile = neighbour.GetComponent<LandTile>();
+                if (neighbourTile && !closedSet.Contains(neighbourTile) && !openSet.Contains(neighbourTile))
+                    openSet.Add(neighbourTile);
             }
         }
+
+        for (uint i = 0; i < farms; i++)
+        {
+            if (placementSet.Count == 0)
+                placementSet = new List<LandTile>(openSet);
+
+            LandTile tile = placementSet[Random.Range(0, placementSet.Count)];
+            SpawnFarm(tile);
+            openSet.Remove(tile);
+            placementSet.Remove(tile);
+            closedSet.Add(tile);
+            foreach (GameObject neighbour in tile.GetNeighbours())
+            {
+                LandTile neighbourTile = neighbour.GetComponent<LandTile>();
+                if (neighbourTile && !closedSet.Contains(neighbourTile) && !openSet.Contains(neighbourTile))
+                    openSet.Add(neighbourTile);
+            }
+        }
+    }
+
+    //=================================================================
+    //             SpawnHouse(GameObject tile)
+    //=================================================================
+    private void SpawnHouse(LandTile tile)
+    {
+        float xPos = tile.transform.position.x;
+        float zPos = tile.transform.position.z;
+
+        int temp = UnityEngine.Random.Range(0, 6);
+        GameObject tempBuilding = Instantiate(housePrefab, new Vector3(xPos, yOffsetHouse, zPos), Quaternion.Euler(0, temp * 60, 0));
+        tile.Building = tempBuilding;
+        tempBuilding.GetComponentInParent<Building>().Tile = tile.gameObject;
+        townHall.HouseAmount++;
+        tile.OnBuildingPlaced();
+    }
+
+    //=================================================================
+    //             SpawnFarm(GameObject tile)
+    //=================================================================
+    private void SpawnFarm(LandTile tile)
+    {
+        float xPos = tile.transform.position.x;
+        float zPos = tile.transform.position.z;
+
+        int temp = UnityEngine.Random.Range(0, 6);
+        GameObject tempBuilding = Instantiate(farmPrefab, new Vector3(xPos, yOffsetHouse, zPos), Quaternion.Euler(0, temp * 60, 0));
+        tile.Building = tempBuilding;
+        tempBuilding.GetComponentInParent<Building>().Tile = tile.gameObject;
+        townHall.FarmAmount++;
+        tile.OnBuildingPlaced();
     }
 
     //=================================================================
