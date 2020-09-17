@@ -18,7 +18,9 @@ public class Building : MonoBehaviour
 
     [Header("Debug Settings")]
     [SerializeField] private GameObject tile;
+    [SerializeField] private bool hasCamerman = false;
 
     public BuildingType Type { get => type; set => type = value; }
     public GameObject Tile { get => tile; set => tile = value; }
+    public bool HasCamerman { get => hasCamerman; set => hasCamerman = value; }
 }

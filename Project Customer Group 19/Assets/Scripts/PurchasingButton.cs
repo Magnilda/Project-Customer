@@ -13,11 +13,17 @@ public class PurchasingButton : MonoBehaviour
     [SerializeField] private int price;
     private Currency wallet;
 
+    //=================================================================
+    //                         Start()
+    //=================================================================
     void Start()
     {
         wallet = FindObjectOfType<Currency>();
     }
 
+    //=================================================================
+    //                     DisableButtons()
+    //=================================================================
     public void DisableButtons()
     {
         upgradeButton.gameObject.SetActive(false);
@@ -28,6 +34,9 @@ public class PurchasingButton : MonoBehaviour
         upgrader.UpgradeHouse = false;
     }
 
+    //=================================================================
+    //                    EnableCameraman()
+    //=================================================================
     public void EnableCameraman()
     {
         if (wallet.CurrentCurrency >= price)
@@ -37,6 +46,9 @@ public class PurchasingButton : MonoBehaviour
         }
     }
 
+    //=================================================================
+    //                   EnableUpgradeHouse()
+    //=================================================================
     public void EnableUpgradeHouse()
     {
         if (wallet.CurrentCurrency >= price)
@@ -44,6 +56,7 @@ public class PurchasingButton : MonoBehaviour
             Debug.Log("Order went through: " + wallet.CurrentCurrency + "," + price);
             upgrader.UpgradeHouse = true;
             upgradeButton.gameObject.SetActive(false);
+            if (!cameraButton.gameObject.activeSelf) { cancelButton.gameObject.SetActive(false); }
             Purchase.PurchaseItem(price);
         }
     }

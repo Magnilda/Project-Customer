@@ -94,16 +94,57 @@ public class Builder : MonoBehaviour
         {
             GameObject _tile = neighbours[num];
 
-            if (_tile.GetComponent<LandTile>() && !_tile.GetComponent<LandTile>().TileOccupied)
+            if (_tile.GetComponent<LandTile>())
             {
-                float xPos = _tile.transform.position.x;
-                float zPos = _tile.transform.position.z;
+                if (!_tile.GetComponent<LandTile>().TileOccupied)
+                {
+                    float xPos = _tile.transform.position.x;
+                    float zPos = _tile.transform.position.z;
 
-                int temp = UnityEngine.Random.Range(0, 6);
-                GameObject tempBuilding = Instantiate(housePrefab, new Vector3(xPos, yOffsetHouse, zPos), Quaternion.Euler(0, temp * 60, 0));
-                _tile.GetComponentInParent<LandTile>().Building = tempBuilding;
-                tempBuilding.GetComponentInParent<Building>().Tile = _tile;
-                townHall.HouseAmount++;
+                    int temp = UnityEngine.Random.Range(0, 6);
+                    GameObject tempBuilding = Instantiate(housePrefab, new Vector3(xPos, yOffsetHouse, zPos), Quaternion.Euler(0, temp * 60, 0));
+                    _tile.GetComponentInParent<LandTile>().Building = tempBuilding;
+                    tempBuilding.GetComponentInParent<Building>().Tile = _tile;
+                    townHall.HouseAmount++;
+                }
+                //else
+                //{
+                //    foreach (var neighbour in _tile.GetComponent<Tile>().GetNeighbours())
+                //    {
+                //        if (neighbour.GetComponent<LandTile>() && !neighbour.GetComponent<LandTile>().TileOccupied)
+                //        {
+                //            float xPos = neighbour.transform.position.x;
+                //            float zPos = neighbour.transform.position.z;
+
+                //            int temp = UnityEngine.Random.Range(0, 6);
+                //            GameObject tempBuilding = Instantiate(housePrefab, new Vector3(xPos, yOffsetHouse, zPos), Quaternion.Euler(0, temp * 60, 0));
+                //            neighbour.GetComponentInParent<LandTile>().Building = tempBuilding;
+                //            tempBuilding.GetComponentInParent<Building>().Tile = neighbour;
+                //            townHall.HouseAmount++;
+
+                //            return;
+                //        }
+                //    }
+                //}
+            }
+            else
+            {
+                //foreach (var neighbour in _tile.GetComponent<Tile>().GetNeighbours())
+                //{
+                //    if (neighbour.GetComponent<LandTile>() && !neighbour.GetComponent<LandTile>().TileOccupied)
+                //    {
+                //        float xPos = neighbour.transform.position.x;
+                //        float zPos = neighbour.transform.position.z;
+
+                //        int temp = UnityEngine.Random.Range(0, 6);
+                //        GameObject tempBuilding = Instantiate(housePrefab, new Vector3(xPos, yOffsetHouse, zPos), Quaternion.Euler(0, temp * 60, 0));
+                //        neighbour.GetComponentInParent<LandTile>().Building = tempBuilding;
+                //        tempBuilding.GetComponentInParent<Building>().Tile = neighbour;
+                //        townHall.HouseAmount++;
+
+                //        return;
+                //    }
+                //}
             }
         }
     }
