@@ -13,6 +13,7 @@ public class TownHall : MonoBehaviour
     [Header("Debug Settings")]
     [SerializeField] private int townHallLevel = 1;
     [SerializeField] private int houseAmount = 0;
+    [SerializeField] private int upgradedHouseAmount = 0;
     [SerializeField] private int waterPumpAmount = 0;
     [SerializeField] private int farmAmount = 0;
     [SerializeField] private int cameraManAmount = 0;
@@ -85,4 +86,5 @@ public class TownHall : MonoBehaviour
     public int FarmAmount { get => farmAmount; set => farmAmount = value; }
     public int CameraManAmount { get => cameraManAmount; set => cameraManAmount = value; }
     public int HouseAmount { get => houseAmount; set => houseAmount = value; }
+    public int UpgradedHouseAmount { get => upgradedHouseAmount; set => upgradedHouseAmount = value; }
 }

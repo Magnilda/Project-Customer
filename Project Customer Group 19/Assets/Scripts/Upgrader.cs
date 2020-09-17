@@ -7,7 +7,7 @@ public class Upgrader : MonoBehaviour
 {
     [SerializeField] private GameObject upgradedHousePrefab;
     [SerializeField] private GameObject cameraPrefab;
-    [SerializeField] private TownHall townHall;     //TODO add to townhall
+    [SerializeField] private TownHall townHall;
     [SerializeField] private Button cancelButton;
     [SerializeField] private Button upgradeButton;
     [SerializeField] private Button cameraButton;
@@ -25,6 +25,7 @@ public class Upgrader : MonoBehaviour
     void Start()
     {
         DisableButtons();
+        townHall = FindObjectOfType<TownHall>();
     }
 
     //=================================================================
@@ -66,6 +67,7 @@ public class Upgrader : MonoBehaviour
 
                 GameObject newBuilding = Instantiate(cameraPrefab, new Vector3(tempPos.x, yOffsetCamera, tempPos.z), Quaternion.identity);
                 selectedGameObject.GetComponent<Building>().HasCamerman = true;
+                townHall.CameraManAmount++;
 
                 buyCameraman = false;
             }

@@ -31,6 +31,8 @@ public class Builder : MonoBehaviour
     private BuildingType buildingType;
     private int price;
 
+    [SerializeField] private ChangeText error;
+
     //=================================================================
     //                           Update()
     //=================================================================
@@ -62,6 +64,27 @@ public class Builder : MonoBehaviour
             GameObject hitObject = GetHitObject();
 
             if (hitObject == null) { return; }
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (hitObject.GetComponentInParent<LandTile>() && hitObject.GetComponentInParent<LandTile>().GetNeighbours().Count >= 5)
+                {
+                    foreach (GameObject gm in hitObject.GetComponentInParent<LandTile>().GetNeighbours())
+                    {
+                        if (gm.GetComponent<WaterTile>())
+                        {
+                            if (error != null)
+                                error.ChangeTextAndColor("Not enough available tiles in this region");
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    if (error != null)
+                        error.ChangeTextAndColor("Not enough available tiles in this region");
+                    return;
+                }
+            }
 
             if (hitObject.GetComponentInParent<LandTile>() && Input.GetMouseButtonDown(0))
             {
@@ -89,7 +112,6 @@ public class Builder : MonoBehaviour
     private void SpawnHouses(int amount, GameObject tile)
     {
         List<GameObject> neighbours = tile.GetComponentInParent<Tile>().GetNeighbours();
-
         for (int num = 0; num < amount; num++)
         {
             GameObject _tile = neighbours[num];
@@ -107,44 +129,6 @@ public class Builder : MonoBehaviour
                     tempBuilding.GetComponentInParent<Building>().Tile = _tile;
                     townHall.HouseAmount++;
                 }
-                //else
-                //{
-                //    foreach (var neighbour in _tile.GetComponent<Tile>().GetNeighbours())
-                //    {
-                //        if (neighbour.GetComponent<LandTile>() && !neighbour.GetComponent<LandTile>().TileOccupied)
-                //        {
-                //            float xPos = neighbour.transform.position.x;
-                //            float zPos = neighbour.transform.position.z;
-
-                //            int temp = UnityEngine.Random.Range(0, 6);
-                //            GameObject tempBuilding = Instantiate(housePrefab, new Vector3(xPos, yOffsetHouse, zPos), Quaternion.Euler(0, temp * 60, 0));
-                //            neighbour.GetComponentInParent<LandTile>().Building = tempBuilding;
-                //            tempBuilding.GetComponentInParent<Building>().Tile = neighbour;
-                //            townHall.HouseAmount++;
-
-                //            return;
-                //        }
-                //    }
-                //}
-            }
-            else
-            {
-                //foreach (var neighbour in _tile.GetComponent<Tile>().GetNeighbours())
-                //{
-                //    if (neighbour.GetComponent<LandTile>() && !neighbour.GetComponent<LandTile>().TileOccupied)
-                //    {
-                //        float xPos = neighbour.transform.position.x;
-                //        float zPos = neighbour.transform.position.z;
-
-                //        int temp = UnityEngine.Random.Range(0, 6);
-                //        GameObject tempBuilding = Instantiate(housePrefab, new Vector3(xPos, yOffsetHouse, zPos), Quaternion.Euler(0, temp * 60, 0));
-                //        neighbour.GetComponentInParent<LandTile>().Building = tempBuilding;
-                //        tempBuilding.GetComponentInParent<Building>().Tile = neighbour;
-                //        townHall.HouseAmount++;
-
-                //        return;
-                //    }
-                //}
             }
         }
     }

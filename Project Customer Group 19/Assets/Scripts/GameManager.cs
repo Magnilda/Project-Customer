@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private Canvas canvas;
+    [SerializeField] private List<GameObject> objectsToActivate;
     [SerializeField] private Builder builder;
     [SerializeField] private TimeManager timeManager;
 
@@ -42,12 +43,16 @@ public class GameManager : MonoBehaviour
         if (currentStage == GameStage.TOWNHALL)
         {
             //TODO set the camera active?
-            canvas.gameObject.SetActive(false);
+            //canvas.gameObject.SetActive(false);
             builder.TownHallMode = true;
         }
         if (currentStage == GameStage.GAME)
         {
-            canvas.gameObject.SetActive(true);
+            foreach(GameObject gm in objectsToActivate)
+            {
+                gm.SetActive(true);
+            }
+            //canvas.gameObject.SetActive(true);
         }
     }
 
