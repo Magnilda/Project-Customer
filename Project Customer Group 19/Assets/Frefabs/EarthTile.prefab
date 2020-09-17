@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2660025489b91dd40b3b21f0166fcdaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vegitation: []
 --- !u!1 &8490171946893941580
 GameObject:
   m_ObjectHideFlags: 0
@@ -84,7 +85,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8490171946893941580}
-  m_Mesh: {fileID: 2534964839176971238, guid: 2959fcaaf7a041548a1f4251487a1b06, type: 3}
+  m_Mesh: {fileID: 2534964839176971238, guid: d8047b967aa157141bac6bac41d72fe5, type: 3}
 --- !u!23 &7985966356949777049
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -139,4 +140,4 @@ MeshCollider:
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 2534964839176971238, guid: 2959fcaaf7a041548a1f4251487a1b06, type: 3}
+  m_Mesh: {fileID: 2534964839176971238, guid: d8047b967aa157141bac6bac41d72fe5, type: 3}

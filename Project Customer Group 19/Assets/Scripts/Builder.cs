@@ -11,17 +11,18 @@ public class Builder : MonoBehaviour
         WATERFACILITY,
         HOUSE
     }
+
     [Header("Builder Settings")]
-    [SerializeField] private GameObject housePrefab;
-    [SerializeField] private GameObject farmPrefab;
-    [SerializeField] private GameObject townHallPrefab;
-    [SerializeField] private GameObject waterPumpPrefab;
+    public GameObject housePrefab;
+    public GameObject farmPrefab;
+    public GameObject townHallPrefab;
+    public GameObject waterPumpPrefab;
 
     [Header("Debug Settings")]
-    [SerializeField] private Button cancelButton;
-    [SerializeField] private Button buildButton;
-    [SerializeField] private GameManager gameManager;
-    [SerializeField] private TownHall townHall;
+    public Button cancelButton;
+    public Button buildButton;
+    public GameManager gameManager;
+    public TownHall townHall;
     [SerializeField] private float yOffsetTownHall;
     [SerializeField] private float yOffsetWaterpump;
     [SerializeField] private float yOffsetHouse;
@@ -110,7 +111,7 @@ public class Builder : MonoBehaviour
 
                     ExpandVillage(5, 0);
 
-                    TimeManager.OnNextDayAction += OnLevelStart; ///TODO: MEI REMAP THIS TO NEXT LEVEL INSTEAD OF NEXT DAY. Good luck with your deadline ;)
+                    TimeManager.OnNextDayAction += OnLevelStart; ///TODO: REMAP THIS TO NEXT LEVEL INSTEAD OF NEXT DAY. 
 
                     townHallMode = false;
                     gameManager.CurrentStage = GameManager.GameStage.GAME;
@@ -174,6 +175,10 @@ public class Builder : MonoBehaviour
     //=================================================================
     private void SpawnHouse(LandTile tile)
     {
+        if(tile == null)
+        {
+            Debug.Log("dafuq!?");
+        }
         float xPos = tile.transform.position.x;
         float zPos = tile.transform.position.z;
 
@@ -193,8 +198,7 @@ public class Builder : MonoBehaviour
         float xPos = tile.transform.position.x;
         float zPos = tile.transform.position.z;
 
-        int temp = UnityEngine.Random.Range(0, 6);
-        GameObject tempBuilding = Instantiate(farmPrefab, new Vector3(xPos, yOffsetHouse, zPos), Quaternion.Euler(0, temp * 60, 0));
+        GameObject tempBuilding = Instantiate(farmPrefab, new Vector3(xPos, yOffsetHouse, zPos), Quaternion.identity);
         tile.Building = tempBuilding;
         tempBuilding.GetComponentInParent<Building>().Tile = tile.gameObject;
         townHall.FarmAmount++;
