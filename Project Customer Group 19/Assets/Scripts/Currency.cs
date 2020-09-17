@@ -103,7 +103,8 @@ public class Currency : MonoBehaviour
     //=================================================================
     private void UpdateCurrency()
     {
-        currencyText.text = "Currency: " + currentCurrency;
+        if (currentCurrency < 0) { currencyText.text = "Currency: " + 0; }
+        else { currencyText.text = "Currency: " + currentCurrency; }
     }
 
     //=================================================================

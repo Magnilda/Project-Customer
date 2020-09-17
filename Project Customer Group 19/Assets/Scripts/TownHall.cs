@@ -9,9 +9,12 @@ public class TownHall : MonoBehaviour
     [SerializeField] private int baseWaterUsage;
     [SerializeField] private int farmWaterUsage;
     [SerializeField] private int houseWaterUsage;
+    [SerializeField] private int cameraManIncome;
+    [SerializeField] private int waterPumpIncome;
+    [SerializeField] private int upgradedHouseIncome;
 
     [Header("Debug Settings")]
-    [SerializeField] private int townHallLevel = 1;
+    [SerializeField] private int townHallLevel = 0;
     [SerializeField] private int houseAmount = 0;
     [SerializeField] private int upgradedHouseAmount = 0;
     [SerializeField] private int waterPumpAmount = 0;
@@ -69,7 +72,7 @@ public class TownHall : MonoBehaviour
     //=================================================================
     private int CalculateIncome() //Income of money per day
     {
-        int value = cameraManAmount /* * cameramanSalary */ + townHallLevel * baseIncome;
+        int value = (cameraManAmount * cameraManIncome) + ((townHallLevel + 1) * baseIncome);
         return value;
     }
 
@@ -78,7 +81,8 @@ public class TownHall : MonoBehaviour
     //=================================================================
     private int CalculateWaterIncome()  //Income of water per day
     {
-        int value = (waterPumpAmount /* * waterPumpIncome */ ) - (farmWaterUsage + houseWaterUsage + baseWaterUsage); // * amount of them
+        int value = ((waterPumpAmount * waterPumpIncome) + (upgradedHouseAmount * upgradedHouseIncome)) -
+            ((farmWaterUsage * farmAmount) + (houseWaterUsage * houseAmount) + (houseWaterUsage * upgradedHouseAmount) + baseWaterUsage); // * amount of them
         return value;
     }
 
