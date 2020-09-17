@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class PurchasingButton : MonoBehaviour
 {
@@ -9,6 +10,13 @@ public class PurchasingButton : MonoBehaviour
     [SerializeField] private Button cancelButton;
     [SerializeField] private Button upgradeButton;
     [SerializeField] private Button cameraButton;
+    [SerializeField] private int price;
+    private Currency wallet;
+
+    void Start()
+    {
+        wallet = FindObjectOfType<Currency>();
+    }
 
     public void DisableButtons()
     {
@@ -22,13 +30,21 @@ public class PurchasingButton : MonoBehaviour
 
     public void EnableCameraman()
     {
-        upgrader.BuyCameraman = true;
-        cameraButton.gameObject.SetActive(false);
+        if (wallet.CurrentCurrency >= price)
+        {
+            upgrader.BuyCameraman = true;
+            cameraButton.gameObject.SetActive(false);
+        }
     }
 
     public void EnableUpgradeHouse()
     {
-        upgrader.UpgradeHouse = true;
-        upgradeButton.gameObject.SetActive(false);
+        if (wallet.CurrentCurrency >= price)
+        {
+            Debug.Log("Order went through: " + wallet.CurrentCurrency + "," + price);
+            upgrader.UpgradeHouse = true;
+            upgradeButton.gameObject.SetActive(false);
+            Purchase.PurchaseItem(price);
+        }
     }
 }

@@ -22,10 +22,14 @@ public class Builder : MonoBehaviour
     [SerializeField] private Button buildButton;
     [SerializeField] private GameManager gameManager;
     [SerializeField] private TownHall townHall;
+    [SerializeField] private float yOffsetTownHall;
+    [SerializeField] private float yOffsetWaterpump;
+    [SerializeField] private float yOffsetHouse;
     private GameObject buildingPrefab;
     private bool canBuild = false;
     private bool townHallMode = false;
     private BuildingType buildingType;
+    private int price;
 
     //=================================================================
     //                           Update()
@@ -65,15 +69,41 @@ public class Builder : MonoBehaviour
                 {
                     float x = hitObject.transform.position.x;
                     float z = hitObject.transform.position.z;
-                    GameObject tempBuilding = Instantiate(townHallPrefab, new Vector3(x, 0, z), Quaternion.identity);
-
+                    GameObject tempBuilding = Instantiate(townHallPrefab, new Vector3(x, yOffsetTownHall, z), Quaternion.identity);
                     hitObject.GetComponentInParent<LandTile>().Building = tempBuilding;
                     tempBuilding.GetComponentInParent<Building>().Tile = hitObject;
                     townHall = tempBuilding.GetComponent<TownHall>();
+                    SpawnHouses(5, hitObject);
+
                     townHallMode = false;
                     gameManager.CurrentStage = GameManager.GameStage.GAME;
                 }
 
+            }
+        }
+    }
+
+    //=================================================================
+    //             SpawnHouses(int amount, GameObject tile)
+    //=================================================================
+    private void SpawnHouses(int amount, GameObject tile)
+    {
+        List<GameObject> neighbours = tile.GetComponentInParent<Tile>().GetNeighbours();
+
+        for (int num = 0; num < amount; num++)
+        {
+            GameObject _tile = neighbours[num];
+
+            if (_tile.GetComponent<LandTile>() && !_tile.GetComponent<LandTile>().TileOccupied)
+            {
+                float xPos = _tile.transform.position.x;
+                float zPos = _tile.transform.position.z;
+
+                int temp = UnityEngine.Random.Range(0, 6);
+                GameObject tempBuilding = Instantiate(housePrefab, new Vector3(xPos, yOffsetHouse, zPos), Quaternion.Euler(0, temp * 60, 0));
+                _tile.GetComponentInParent<LandTile>().Building = tempBuilding;
+                tempBuilding.GetComponentInParent<Building>().Tile = _tile;
+                townHall.HouseAmount++;
             }
         }
     }
@@ -93,9 +123,10 @@ public class Builder : MonoBehaviour
             {
                 if (hitObject.GetComponentInParent<WaterTile>().TileOccupied == false)
                 {
+                    Purchase.PurchaseItem(price);
                     float x = hitObject.transform.position.x;
                     float z = hitObject.transform.position.z;
-                    GameObject tempBuilding = Instantiate(waterPumpPrefab, new Vector3(x, 0, z), Quaternion.identity);
+                    GameObject tempBuilding = Instantiate(waterPumpPrefab, new Vector3(x, yOffsetWaterpump, z), Quaternion.identity);
 
                     hitObject.GetComponentInParent<WaterTile>().Building = tempBuilding;
                     tempBuilding.GetComponentInParent<Building>().Tile = hitObject;
@@ -106,6 +137,14 @@ public class Builder : MonoBehaviour
                 }
             }
         }
+    }
+
+    //=================================================================
+    //                   ChangePrice(int _price)
+    //=================================================================
+    public void ChangePrice(int _price)
+    {
+        price = _price;
     }
 
     //=================================================================

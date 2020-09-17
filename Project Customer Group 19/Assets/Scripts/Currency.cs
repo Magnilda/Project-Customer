@@ -12,9 +12,8 @@ public class Currency : MonoBehaviour
     [SerializeField] private Text waterText;
 
     [Header("Debug Settings")]
-    private int currentCurrency;
+    [SerializeField] private int currentCurrency;
     private int currentWaterAmount;
-    private int subtractAmount;
     private int addAmount;
     private int addWaterAmount;
 
@@ -55,9 +54,14 @@ public class Currency : MonoBehaviour
     //=================================================================
     //                       HandleSubtraction()
     //=================================================================
-    private void HandleSubtraction()
+    private void HandleSubtraction(int amount)
     {
-        SubtractCurrency();
+        SubtractCurrency(amount);
+        UpdateCurrency();
+    }
+
+    void Update()
+    {
         UpdateCurrency();
     }
 
@@ -73,9 +77,9 @@ public class Currency : MonoBehaviour
     //=================================================================
     //                       SubtractCurrency()
     //=================================================================
-    private void SubtractCurrency()
+    private void SubtractCurrency(int amount)
     {
-        currentCurrency -= subtractAmount;
+        currentCurrency -= amount;
     }
 
     //=================================================================
@@ -113,7 +117,6 @@ public class Currency : MonoBehaviour
 
     //Getter & Setters
     public int CurrentCurrency { get => currentCurrency;}
-    public int SubtractAmount { set => subtractAmount = value; }
     public int AddAmount {set => addAmount = value; }
     public int AddWaterAmount { set => addWaterAmount = value; }
 }

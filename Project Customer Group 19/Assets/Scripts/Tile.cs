@@ -35,6 +35,30 @@ public class Tile : MonoBehaviour
     public GameObject BottomRightTile { get => bottomRightTile; set => bottomRightTile = value; }
     public TileType Type { get => type; set => type = value; }
 
+    //======================================================
+    //                   GetNeighbours()
+    //======================================================
+    public List<GameObject> GetNeighbours()
+    {
+        List<GameObject> existingNeighbours = new List<GameObject>();
+
+        if (leftTile != null)
+            existingNeighbours.Add(leftTile);
+        if (rightTile != null)
+            existingNeighbours.Add(rightTile);
+        if (topLeftTile != null)
+            existingNeighbours.Add(topLeftTile);
+        if (topRightTile != null)
+            existingNeighbours.Add(topRightTile);
+        if (bottomLeftTile != null)
+            existingNeighbours.Add(bottomLeftTile);
+        if (bottomRightTile != null)
+            existingNeighbours.Add(bottomRightTile);
+
+        return existingNeighbours;
+    }
+
+
 
     //----------------------DEBUG-------------------------------
     //======================================================

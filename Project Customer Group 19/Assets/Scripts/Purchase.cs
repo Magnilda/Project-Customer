@@ -5,7 +5,12 @@ using System;
 
 public class Purchase : MonoBehaviour
 {
-    public static event Action OnPurchase;
+    public static event Action <int> OnPurchase;
 
-    //TODO on button click fire Onpurchase action
+    public static void PurchaseItem(int price)
+    {
+        Debug.Log("item purchased for: " + price);
+        OnPurchase?.Invoke(price);
+    }
+
 }

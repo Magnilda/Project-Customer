@@ -7,6 +7,7 @@ public class ButtonBuilder : MonoBehaviour
 {
     [SerializeField] private Builder builder;
     [SerializeField] private Button cancelButton;
+    private Currency wallet;
 
     //=================================================================
     //                           Start()
@@ -14,18 +15,22 @@ public class ButtonBuilder : MonoBehaviour
     public void Start()
     {
         cancelButton.gameObject.SetActive(false);
+        wallet = FindObjectOfType<Currency>();
     }
 
     //=================================================================
     //                        SetBuilderMode()
     //=================================================================
-    public void EnableBuilderMode()
+    public void EnableBuilderMode(int price)
     {
-
-        builder.CanBuild = true;
-        EnableCancelButton();
-        this.gameObject.SetActive(false);
-        //Debug.Log("CHANGED TO TRUE");
+        if (wallet.CurrentCurrency >= price)
+        {
+            builder.ChangePrice(price);
+            builder.CanBuild = true;
+            EnableCancelButton();
+            this.gameObject.SetActive(false);
+            Debug.Log("CHANGED TO TRUE");
+        }
     }
 
     //=================================================================

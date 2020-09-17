@@ -10,6 +10,7 @@ public class Upgrader : MonoBehaviour
     [SerializeField] private Button cancelButton;
     [SerializeField] private Button upgradeButton;
     [SerializeField] private Button cameraButton;
+    [SerializeField] private float yOffsetHouse;
     private bool upgradeMode = false;
     private bool upgradeHouse = false;
     private bool buyCameraman = false;
@@ -34,8 +35,11 @@ public class Upgrader : MonoBehaviour
             {
                 Vector3 tempPos = selectedGameObject.transform.position;
                 GameObject tempTile = selectedGameObject.GetComponentInParent<Building>().Tile;
+                Quaternion rotToSetTo = selectedGameObject.transform.rotation;
 
-                GameObject newBuilding = Instantiate(upgradedHousePrefab, new Vector3(tempPos.x, 0, tempPos.z), Quaternion.identity);
+                GameObject newBuilding = Instantiate(upgradedHousePrefab, new Vector3(tempPos.x, yOffsetHouse, tempPos.z), Quaternion.identity);
+                newBuilding.transform.rotation = rotToSetTo;
+
                 newBuilding.GetComponentInParent<Building>().Tile = tempTile;
                 tempTile.GetComponentInParent<LandTile>().Building = newBuilding;
 
@@ -60,7 +64,7 @@ public class Upgrader : MonoBehaviour
         if (collidingObject.GetComponentInParent<Building>())
         {
             //Debug.Log("Found building component");
-            if (collidingObject.GetComponentInParent<Building>().Type == Building.BuildingType.TOWNHALL && Input.GetMouseButtonDown(0))
+            if (collidingObject.GetComponentInParent<Building>().Type == Building.BuildingType.HOUSE && Input.GetMouseButtonDown(0))
             {
                 //Debug.Log("Building type is a townhall");
                 upgradeMode = true;

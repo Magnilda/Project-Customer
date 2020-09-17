@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+
 public class TilemapGenerator : MonoBehaviour
 {
     [Header("Tilemap settings")]
@@ -69,8 +70,8 @@ public class TilemapGenerator : MonoBehaviour
                 {
                     xPos += xOffset * 0.5f;
                 }
-
-                GameObject tempHexTile = Instantiate(tempTileType, new Vector3(xPos, 0, z * zOffset), Quaternion.identity); //identity means no rotations
+                int temp = UnityEngine.Random.Range(0, 6);
+                GameObject tempHexTile = Instantiate(tempTileType, new Vector3(xPos, 0, z * zOffset), Quaternion.Euler(0, temp * 60, 0)); //identity means no rotations
 
                 //Setting parent and name of tile.
                 tempHexTile.transform.parent = transform;
