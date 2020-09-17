@@ -88,6 +88,7 @@ public class TilemapGenerator : MonoBehaviour
                 if (tempHexTile.GetComponent<WaterTile>() != null)
                 {
                     tempHexTile.GetComponent<Tile>().Type = Tile.TileType.WATER;
+                    tempHexTile.transform.rotation = Quaternion.identity;
                 }
 
                 //Insert into array
