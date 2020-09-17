@@ -96,12 +96,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 550394140a849e642aad2fdccf4ded33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseIncome: 40
-  baseWaterUsage: 10
-  farmWaterUsage: 0
-  houseWaterUsage: 0
+  baseIncome: 60
+  baseWaterUsage: 1
+  farmWaterUsage: 1
+  houseWaterUsage: 1
+  cameraManIncome: 25
+  waterPumpIncome: 1
+  upgradedHouseIncome: 2
   townHallLevel: 0
   houseAmount: 0
+  upgradedHouseAmount: 0
   waterPumpAmount: 0
   farmAmount: 0
   cameraManAmount: 0
@@ -123,6 +127,7 @@ MonoBehaviour:
   buildingCost: 0
   type: 4
   tile: {fileID: 0}
+  hasCamerman: 0
 --- !u!65 &8652388962089929492
 BoxCollider:
   m_ObjectHideFlags: 0

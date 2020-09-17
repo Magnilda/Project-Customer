@@ -25,7 +25,6 @@ public class Upgrader : MonoBehaviour
     void Start()
     {
         DisableButtons();
-        townHall = FindObjectOfType<TownHall>();
     }
 
     //=================================================================
@@ -35,6 +34,7 @@ public class Upgrader : MonoBehaviour
     {
         checkMouseClick();
         HandleUpgrading();
+        if (townHall == null) { townHall = FindObjectOfType<TownHall>(); }
     }
 
     //=================================================================
@@ -56,6 +56,8 @@ public class Upgrader : MonoBehaviour
                 newBuilding.GetComponent<Building>().HasCamerman = _hasCameraman;
                 newBuilding.GetComponentInParent<Building>().Tile = tempTile;
                 tempTile.GetComponentInParent<LandTile>().Building = newBuilding;
+                townHall.UpgradedHouseAmount++;
+                townHall.HouseAmount--;
 
                 Destroy(selectedGameObject);
                 upgradeHouse = false;

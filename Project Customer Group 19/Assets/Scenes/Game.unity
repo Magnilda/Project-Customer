@@ -942,7 +942,7 @@ MonoBehaviour:
   cancelButton: {fileID: 1885956118}
   upgradeButton: {fileID: 788377916}
   cameraButton: {fileID: 992885655}
-  price: 50
+  price: 250
 --- !u!1 &948859963
 GameObject:
   m_ObjectHideFlags: 0
@@ -1351,7 +1351,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 60
+          m_IntArgument: 50
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2499,8 +2499,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d8d8cce726770743858e0c45f8b139a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingCurrency: 900
-  startingWaterAmount: 20
+  startingCurrency: 150
+  startingWaterAmount: 0
   currencyText: {fileID: 1818913137}
   waterText: {fileID: 613302485}
   currentCurrency: 0
