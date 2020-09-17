@@ -44,6 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2660025489b91dd40b3b21f0166fcdaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vegitation:
+  - {fileID: 6519318670525756977}
+  - {fileID: 8894880408466788098}
 --- !u!64 &3726587992824390693
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -136,6 +139,18 @@ Transform:
 --- !u!1 &5639643143426813291 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2082370583701708317, guid: 4ee0e4653e96c244cb5245b51dc15cbd,
+    type: 3}
+  m_PrefabInstance: {fileID: 3269023388404845704}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6519318670525756977 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8585165707712592569, guid: 4ee0e4653e96c244cb5245b51dc15cbd,
+    type: 3}
+  m_PrefabInstance: {fileID: 3269023388404845704}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8894880408466788098 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6209639154149360522, guid: 4ee0e4653e96c244cb5245b51dc15cbd,
     type: 3}
   m_PrefabInstance: {fileID: 3269023388404845704}
   m_PrefabAsset: {fileID: 0}

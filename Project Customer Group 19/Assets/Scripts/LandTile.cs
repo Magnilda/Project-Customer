@@ -6,6 +6,16 @@ public class LandTile : Tile
 {
     private bool tileOccupied = false;
     private GameObject building;   //building on the tile
+    public List<GameObject> vegitation;
+
+    //=================================================================
+    //                         OnBuildingPlaced()
+    //=================================================================
+    public void OnBuildingPlaced()
+    {
+        foreach(GameObject foilage in vegitation)
+            foilage.SetActive(false);
+    }
 
     //=================================================================
     //                         Update()
