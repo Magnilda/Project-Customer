@@ -135,11 +135,8 @@ Shader "Custom/WaterShader"
 
 			// Albedo comes from a texture tinted by color
 			float4 c = _Color;
-			//c.rgb = mul(float3(0.0, 1.0, 0.0), unity_WorldToObject);
-			//c.rgb = float3(height, height, height);
 
 			o.Albedo = c.rgb;
-			//o.Normal = float3(0.0, 0.0, 1.0);
 			o.Normal = normal;
 			// Metallic and smoothness come from slider variables
 			o.Metallic = _Metallic;

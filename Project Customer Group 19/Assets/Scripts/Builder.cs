@@ -37,6 +37,8 @@ public class Builder : MonoBehaviour
 
     List<LandTile> openSet = new List<LandTile>();
     List<LandTile> closedSet = new List<LandTile>();
+    List<WaterTile> openWaterSet = new List<WaterTile>();
+    List<WaterTile> closedWaterSet = new List<WaterTile>();
 
     //=================================================================
     //                           Update()
@@ -63,9 +65,9 @@ public class Builder : MonoBehaviour
     //                      OnLevelStart()
     //=================================================================
     private void OnLevelStart()
-    { 
+    {
         level++;
-        switch(level)
+        switch (level)
         {
             case 0:
                 break;
@@ -107,6 +109,12 @@ public class Builder : MonoBehaviour
                         LandTile neighbourTile = neighbour.GetComponent<LandTile>();
                         if (neighbourTile && !closedSet.Contains(neighbourTile) && !openSet.Contains(neighbourTile))
                             openSet.Add(neighbourTile);
+                        else
+                        {
+                            WaterTile waterTile = neighbour.GetComponent<WaterTile>();
+                            if (waterTile && !openWaterSet.Contains(waterTile) && !closedWaterSet.Contains(waterTile))
+                                openWaterSet.Add(waterTile);
+                        }
                     }
 
                     ExpandVillage(5, 0);
@@ -122,21 +130,65 @@ public class Builder : MonoBehaviour
     }
 
     //=================================================================
+    //             TraverseWater()
+    //=================================================================
+    bool TraverseWater()
+    {
+        bool found = false;
+        while (!found)
+        {
+            if (openWaterSet.Count == 0)
+            {
+                Debug.Log("There's nowhere left to go...");
+                return false;
+            }
+
+            WaterTile tile = openWaterSet[Random.Range(0, openWaterSet.Count)];
+            openWaterSet.Remove(tile);
+            closedWaterSet.Add(tile);
+            foreach (GameObject neighbour in tile.GetNeighbours())
+            {
+                LandTile neighbourTile = neighbour.GetComponent<LandTile>();
+                if (neighbourTile && !closedSet.Contains(neighbourTile) && !openSet.Contains(neighbourTile))
+                {
+                    openSet.Add(neighbourTile);
+                    found = true;
+                    break;
+                }
+                else
+                {
+                    WaterTile waterTile = neighbour.GetComponent<WaterTile>();
+                    if (waterTile && !openWaterSet.Contains(waterTile) && !closedWaterSet.Contains(waterTile))
+                        openWaterSet.Add(waterTile);
+                }
+            }
+        }
+        Debug.Log("Luckily boats exist now!");
+        return true;
+    }
+
+    //=================================================================
     //             ExpandVillage(uint houses, uint farms)
     //=================================================================
     void ExpandVillage(uint houses, uint farms)
     {
         if (openSet.Count == 0)
         {
-            Debug.Log("Boats still need to be invented...");
-            return;
+            if (!TraverseWater())
+                return;
         }
         List<LandTile> placementSet = new List<LandTile>(openSet);
 
         for (uint i = 0; i < houses; i++)
         {
-            if(placementSet.Count == 0)
+            if (placementSet.Count == 0)
+            {
+                if (openSet.Count == 0)
+                    if (!TraverseWater())
+                        return;
+
                 placementSet = new List<LandTile>(openSet);
+            }
 
             LandTile tile = placementSet[Random.Range(0, placementSet.Count)];
             SpawnHouse(tile);
@@ -148,13 +200,25 @@ public class Builder : MonoBehaviour
                 LandTile neighbourTile = neighbour.GetComponent<LandTile>();
                 if (neighbourTile && !closedSet.Contains(neighbourTile) && !openSet.Contains(neighbourTile))
                     openSet.Add(neighbourTile);
+                else
+                {
+                    WaterTile waterTile = neighbour.GetComponent<WaterTile>();
+                    if (waterTile && !openWaterSet.Contains(waterTile) && !closedWaterSet.Contains(waterTile))
+                        openWaterSet.Add(waterTile);
+                }
             }
         }
 
         for (uint i = 0; i < farms; i++)
         {
             if (placementSet.Count == 0)
+            {
+                if (openSet.Count == 0)
+                    if (!TraverseWater())
+                        return;
+
                 placementSet = new List<LandTile>(openSet);
+            }
 
             LandTile tile = placementSet[Random.Range(0, placementSet.Count)];
             SpawnFarm(tile);
@@ -166,6 +230,12 @@ public class Builder : MonoBehaviour
                 LandTile neighbourTile = neighbour.GetComponent<LandTile>();
                 if (neighbourTile && !closedSet.Contains(neighbourTile) && !openSet.Contains(neighbourTile))
                     openSet.Add(neighbourTile);
+                else
+                {
+                    WaterTile waterTile = neighbour.GetComponent<WaterTile>();
+                    if (waterTile && !openWaterSet.Contains(waterTile) && !closedWaterSet.Contains(waterTile))
+                        openWaterSet.Add(waterTile);
+                }
             }
         }
     }
@@ -175,7 +245,7 @@ public class Builder : MonoBehaviour
     //=================================================================
     private void SpawnHouse(LandTile tile)
     {
-        if(tile == null)
+        if (tile == null)
         {
             Debug.Log("dafuq!?");
         }
